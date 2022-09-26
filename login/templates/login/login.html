@@ -1,0 +1,89 @@
+{% extends 'login/base.html' %}
+
+{% block main %}
+<body class="bg-blue-50">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
+
+<style>
+::selection {
+    color: white;
+    background-color: #60A5FA;
+}
+
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+.pace-inactive {
+	display: none;
+}
+
+.pace .pace-progress {
+	background: #1a5fb4;
+	position: fixed;
+	z-index: 2000;
+	top: 0;
+	right: 100%;
+	width: 100%;
+	height: 2px;
+}
+
+.pace-running > *:not(.pace) {
+  opacity:0;
+}
+
+p {
+    margin: 20px auto;
+}
+</style>
+
+
+<nav class="bg-blue-50 px-2 sm:px-4 py-4 shadow-xl shadow-blue-50/75 fixed w-full">
+    <div class="container flex flex-wrap justify-between items-center mx-auto">
+        <a href="{% url 'home' %}" class="flex items-center">
+            <span class="self-center text-xl text-blue-900 whitespace-nowrap">pc.journal</span>
+        </a>
+        <div class="flex md:order-2">
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}"><button type="button" class="bg-blue-100 text-blue-500 hover:text-blue-600 focus:outline-none transition font-medium rounded-xl text-sm px-10 py-2.5 text-center mr-3 md:mr-0 shadow-2xl shadow-blue-500/50 hover:shadow-blue-500/30">Выйти</button></a>
+            {% else %}
+            <a href="{% url 'login' %}"><button type="button" class="bg-blue-100 text-blue-500 hover:text-blue-600 focus:outline-none transition font-medium rounded-xl text-sm px-10 py-2.5 text-center mr-3 md:mr-0 shadow-2xl shadow-blue-500/50 hover:shadow-blue-500/30">Войти</button></a>
+            {% endif %}
+        </div>
+        <div class="hidden justify-between items-center w-full md:flex md:w-auto md:order-1" id="mobile-menu-4">
+            <p class="text-blue-500">{{ user.first_name }} {{ user.last_name }}</p>
+        </div>
+    </div>
+</nav>
+
+<br>
+
+<div class="container m-auto mt-20">
+    <form action="" method="post" class="mx-10 w-1/2">
+        {% csrf_token %}
+
+        <div class="form_error">{{ form.non_field_errors }}</div>
+
+        {% for f in form %}
+        <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</p>
+        <div class="form_error">{{ f.errors }}</div>
+        {% endfor %}
+
+        <button class="w-full bg-blue-100 text-blue-500 hover:text-blue-600 focus:outline-none transition font-medium rounded-xl text-sm px-10 py-2.5 mb-10 text-center mr-3 md:mr-0 shadow-2xl shadow-blue-500/30 hover:shadow-blue-500/20" type="submit">Войти</button>
+    </form>
+</div>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    var inp=document.getElementsByTagName('input');
+
+    for(var i=0; i < inp.length; i++) {
+        inp[i].setAttribute('autocomplete', 'off');
+    }
+</script>
+{% endblock %}
